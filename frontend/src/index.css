@@ -1,0 +1,723 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap');
+
+:root {
+  /* Dark Theme (Default) - Midnight Charcoal */
+  --bg-color: #202124;
+  --bg-gradient: radial-gradient(circle at top left, #2d2f33, #202124);
+  --glass-bg: rgba(45, 47, 51, 0.7);
+  /* Lighter glass for contrast against dark bg */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --accent-color: #fbbc04;
+  --sidebar-width: 260px;
+  --card-bg: rgba(255, 255, 255, 0.05);
+
+  /* Utils */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --nav-hover-bg: rgba(255, 255, 255, 0.08);
+
+  /* Note Colors (Dark Mode - Deep/Muted) */
+  --note-bg-default: var(--card-bg);
+  --note-bg-red: #5c2b29;
+  --note-bg-orange: #614a19;
+  --note-bg-yellow: #635d19;
+  --note-bg-green: #345920;
+  --note-bg-teal: #16504b;
+  --note-bg-blue: #2d555e;
+  --note-bg-darkblue: #1e3a5f;
+  --note-bg-purple: #42275e;
+  --note-bg-pink: #5b2245;
+  --note-bg-brown: #442726;
+  --note-bg-gray: #3c3f43;
+}
+
+[data-theme="light"] {
+  /* Light Theme - Clean Vapor */
+  --bg-color: #ffffff;
+  --bg-gradient: radial-gradient(circle at top left, #ffffff, #f1f3f4);
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --accent-color: #fbbc04;
+  --card-bg: #ffffff;
+  --nav-hover-bg: rgba(0, 0, 0, 0.04);
+  /* Darker for light mode visibility */
+
+  /* Note Colors (Light Mode - Pastel) */
+  --note-bg-default: #ffffff;
+  --note-bg-red: #fde2df;
+  /* Lighter from #faafa8 */
+  --note-bg-orange: #ffebd8;
+  /* Lighter from #f39f76 */
+  --note-bg-yellow: #fffce3;
+  /* Lighter from #fff8b8 */
+  --note-bg-green: #edfae3;
+  /* Harmonized */
+  --note-bg-teal: #d7f0ea;
+  --note-bg-blue: #e8f4fa;
+  --note-bg-darkblue: #dceaf2;
+  --note-bg-purple: #f0e6f5;
+  --note-bg-pink: #fdecf2;
+  /* Lighter from #f6e2dd */
+  --note-bg-brown: #e9e3d4;
+  --note-bg-gray: #efeff1;
+
+  --note-border: #e0e0e0;
+  /* Light grey for light mode */
+  --note-hover-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+:root {
+  /* Previous vars... adding new ones here at the end of :root block if not already present or appended */
+  --note-border: #5f6368;
+  /* Off-white/grey for dark mode */
+  --note-hover-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6), 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+}
+
+.note-card {
+  border: 1px solid var(--note-border);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.note-card:hover {
+  box-shadow: var(--note-hover-shadow);
+  border-color: transparent;
+  /* Keep often border disappears or softens on hover in Keep? Actually Keep keeps it or uses shadow. Let's keep border. */
+}
+
+/* Actions logic will be handled in JS or via class in NoteCard */
+.note-action-btn:hover {
+  background-color: rgba(153, 164, 185, 0.3) !important;
+  /* Circular hover effect */
+  border-radius: 50%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.icon-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--text-primary);
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  color: #121212;
+  border: none;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(251, 188, 4, 0.4);
+}
+
+/* Inputs - Remove Outlines */
+input,
+textarea,
+select,
+button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  outline: none !important;
+  /* Force remove outlines */
+  width: 100%;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* App Header */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 200;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: 0 !important;
+  /* Force Rectangle as requested */
+}
+
+/* ... existing styles ... */
+/* RESTORED CONTENT START */
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  letter-spacing: -0.5px;
+}
+
+.app-brand img {
+  width: 28px;
+  height: 28px;
+}
+
+/* Robust Animated Hamburger */
+.hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 24px;
+  /* Standardize Width */
+  height: 24px;
+  /* Standardize Height */
+  position: relative;
+  z-index: 10;
+}
+
+.hamburger:hover {
+  opacity: 0.8;
+}
+
+.hamburger-box {
+  width: 24px;
+  /* Standardize */
+  height: 24px;
+  /* Standardize */
+  display: inline-block;
+  position: relative;
+}
+
+.hamburger-inner {
+  display: block;
+  top: 50%;
+  margin-top: -2px;
+  /* Half of height to center */
+}
+
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+  width: 24px;
+  /* Standardize Line Width */
+  height: 2px;
+  /* Thickness */
+  background-color: var(--text-primary);
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+  content: "";
+  display: block;
+}
+
+.hamburger-inner::before {
+  top: -8px;
+  /* Initial Offset */
+  transition: top 0.1s 0.14s ease, opacity 0.1s ease;
+}
+
+.hamburger-inner::after {
+  bottom: -8px;
+  /* Initial Offset */
+  transition: bottom 0.1s 0.14s ease, transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.hamburger-inner {
+  transition: background-color 0.1s 0.14s ease;
+}
+
+/* Active State (Cross) */
+.hamburger.is-active .hamburger-inner {
+  background-color: transparent;
+  /* Hide middle line */
+  transition-delay: 0.14s;
+  /* Wait for collapse */
+}
+
+.hamburger.is-active .hamburger-inner::before {
+  top: 0;
+  /* Move to center */
+  /* Actually we want 2 lines for cross, so if before disappears we only have 1 line? */
+  /* Wait, standard cross uses 2 lines. Usually 'before' and 'after' become the cross, and 'inner' hides.
+     OR 'inner' rotates and 'before' rotates 90?
+     Let's use the Collapse-then-Rotate generic style. */
+
+  /* New Logic:
+     1. Inner becomes one arm.
+     2. Before (or After) becomes other arm.
+     3. Other one hides?
+
+     Actually, simpler: Inner hides. Before & After move to center, then rotate.
+  */
+  transition: top 0.1s ease, transform 0.1s 0.14s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: rotate(45deg);
+  opacity: 1;
+  /* Keep visible */
+}
+
+.hamburger.is-active .hamburger-inner::after {
+  bottom: 0;
+  /* Move to center */
+  transition: bottom 0.1s ease, transform 0.1s 0.14s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: rotate(-45deg);
+}
+
+/* Sidebar (New Positioning) */
+.sidebar {
+  width: var(--sidebar-width);
+  height: calc(100vh - 60px);
+  /* Subtract Header */
+  position: fixed;
+  left: 0;
+  top: 60px;
+  /* Below Header */
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  border-right: 1px solid var(--glass-border);
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  overflow: hidden;
+  /* Hide text overflow during transition */
+}
+
+/* Mini State (formerly Closed) */
+.sidebar.closed {
+  width: 70px;
+  /* No transform, just width change */
+  transform: none;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  padding-top: 90px;
+  /* Header + Spacing */
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  position: relative;
+}
+
+.main-content.expanded {
+  margin-left: 70px;
+  /* Match Mini Width */
+}
+
+/* Sidebar Internal Items */
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 0 10px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.sidebar.closed .sidebar-footer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-nav button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  cursor: pointer;
+  border-radius: 12px;
+  /* Original Rounded */
+  transition: all 0.2s;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar.closed .sidebar-nav button {
+  justify-content: center;
+  padding: 14px 0;
+  border-radius: 12px;
+}
+
+.sidebar-nav button .nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  /* Fix icon width */
+  font-size: 24px;
+  /* Standardize Icon Size 24px */
+  margin-right: 18px;
+  transition: margin 0.3s;
+}
+
+.sidebar.closed .sidebar-nav button .nav-icon {
+  margin-right: 0;
+}
+
+.sidebar-nav button .nav-label {
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.sidebar.closed .sidebar-nav button .nav-label {
+  opacity: 0;
+  width: 0;
+  display: none;
+  /* remove from flow */
+}
+
+/* Override previous specific rule if exists */
+.sidebar-nav button svg {
+  /* Removed simple svg rule in favor of .nav-icon class structure */
+  display: none;
+}
+
+.sidebar-nav button .nav-icon svg {
+  display: block;
+  /* Ensure icon shows inside wrapper */
+}
+
+
+/* Note Input */
+.note-input-container {
+  max-width: 650px;
+  margin: 0 auto 50px;
+  color: var(--text-primary);
+  /* Smoother transition */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Inherit border-radius from glass-panel (16px) */
+}
+
+/* Grid Layout */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  grid-auto-flow: dense;
+  /* Crucial for packing different sized items */
+}
+
+.note-span-2 {
+  grid-column: span 2;
+}
+
+@media (max-width: 600px) {
+  .note-span-2 {
+    grid-column: span 1;
+    /* On mobile, everything is 1 col */
+  }
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Center vertically */
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Toolbar */
+.editor-toolbar {
+  animation: slideDown 0.2s ease;
+}
+
+.toolbar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
+.toolbar-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 1;
+}
+
+.toolbar-btn:disabled {
+  cursor: default;
+  opacity: 0.2;
+}
+
+/* Placeholder for ContentEditable */
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  display: block;
+  /* For Firefox */
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Note Card */
+.note-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+  animation: scaleIn 0.3s ease forwards;
+}
+
+/* Animations */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expandOpen {
+  from {
+    opacity: 0;
+    transform: scaleY(0.95);
+    transform-origin: top;
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.anim-slide-up {
+  animation: slideUpFade 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.anim-expand {
+  animation: expandOpen 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.anim-scale-in {
+  animation: scaleIn 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+
+.note-exit {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.note-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.note-card .actions {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.note-card:hover .actions {
+  opacity: 1;
+}
+
+/* Sidebar is defined above with Main Content for better grouping of layout logic */
+
+
+
+.sidebar-nav button.active,
+.sidebar-nav button:hover {
+  background: var(--nav-hover-bg);
+  /* Brighter hover */
+  color: var(--text-primary);
+}
+
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.6);
+}
+
+/* Masonry Layout */
+.my-masonry-grid {
+  display: flex;
+  margin-left: -20px;
+  /* gutter size offset */
+  width: auto;
+}
+
+.my-masonry-grid_column {
+  padding-left: 20px;
+  /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Ensure Sortable Items don't break layout */
+.note-wrapper {
+  margin-bottom: 20px;
+}
